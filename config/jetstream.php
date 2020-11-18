@@ -29,9 +29,9 @@ return [
     */
 
     'features' => [
-        // Features::profilePhotos(),
-        // Features::api(),
-        // Features::teams(),
+         Features::profilePhotos(),
+         Features::api(),
+         Features::teams(),
     ],
 
 ];
