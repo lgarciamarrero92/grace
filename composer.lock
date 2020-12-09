@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1959a012aa06a62238d04a056ff769b3",
+    "content-hash": "3930065155adadea095425783ddb5b5d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -684,6 +684,79 @@
                 }
             ],
             "time": "2020-10-22T13:57:20+00:00"
+        },
+        {
+            "name": "gazsp/baum",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gazsp/baum.git",
+                "reference": "204f4b69fe90c5a699b44a84fd0474dacf5699f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gazsp/baum/zipball/204f4b69fe90c5a699b44a84fd0474dacf5699f4",
+                "reference": "204f4b69fe90c5a699b44a84fd0474dacf5699f4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": ">=5.8",
+                "illuminate/database": ">=5.8",
+                "illuminate/events": ">=5.8",
+                "illuminate/filesystem": ">=5.8",
+                "illuminate/support": ">=5.8",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5",
+                "php-coveralls/php-coveralls": "^2.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Baum\\Providers\\BaumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Baum": "src/"
+                },
+                "files": [
+                    "src/helpers/tree_helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Estanislau Trepat",
+                    "email": "estanis@etrepat.com",
+                    "homepage": "http://etrepat.com"
+                },
+                {
+                    "name": "Gary Pearman",
+                    "email": "gaz@red-robot.co.uk",
+                    "homepage": "http://red-robot.co.uk"
+                }
+            ],
+            "description": "Baum is an implementation of the Nested Set pattern for Eloquent models.",
+            "keywords": [
+                "MPTT",
+                "database",
+                "eloquent",
+                "laravel",
+                "laravel 5",
+                "nested set"
+            ],
+            "support": {
+                "issues": "https://github.com/gazsp/baum/issues",
+                "source": "https://github.com/gazsp/baum/tree/2.0.2"
+            },
+            "time": "2020-05-05T18:38:07+00:00"
         },
         {
             "name": "graham-campbell/result-type",
