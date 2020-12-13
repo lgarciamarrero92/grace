@@ -7,15 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 
-/**
-* @OA\Info(title="API Usuarios", version="1.0")
-*/
 class UserController extends Controller
 {
     /**
     * @OA\Get(
     *     path="/api/users",
     *     summary="Mostrar usuarios",
+    *     tags={"usuarios"},
     *     @OA\Response(
     *         response=200,
     *         description="Mostrar todos los usuarios."

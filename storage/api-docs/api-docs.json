@@ -1,12 +1,43 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Usuarios",
+        "title": "API GRACE",
         "version": "1.0"
     },
     "paths": {
+        "/api/inputs-from-id/{id}": {
+            "get": {
+                "tags": [
+                    "logros"
+                ],
+                "summary": "Mostrar inputs de determinado título",
+                "operationId": "App\\Http\\Controllers\\AchievementsController::all_inputs_from_id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mostrar inputs de determinado título."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
+                "tags": [
+                    "usuarios"
+                ],
                 "summary": "Mostrar usuarios",
                 "operationId": "App\\Http\\Controllers\\Api\\UserController::index",
                 "responses": {
