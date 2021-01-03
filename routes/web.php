@@ -22,5 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
 
+Route::get('/achievements/create', 'App\Http\Controllers\AchievementsController@create')->name('achievements.create');
 
 
