@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDataRowsTable extends Migration
+class CreateDataInputsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateDataRowsTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_rows', function (Blueprint $table) {
+        Schema::create('data_inputs', function (Blueprint $table) {
             $table->id();
             $table->string('display_name', 255);
-            $table->string('data_type', 255);
+            $table->string('type', 255);
             $table->integer('order')->default(1);
-            $table->boolean('is_multiple')->default(false);
-            $table->text('validations')->nullable();
             $table->text('details')->nullable();
             $table->timestamps();
         });
@@ -32,6 +30,6 @@ class CreateDataRowsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_rows');
+        Schema::dropIfExists('data_inputs');
     }
 }

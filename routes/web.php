@@ -22,6 +22,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/achievements/create', 'App\Http\Controllers\AchievementsController@create')->name('achievements.create');
+Route::get('/entry/{category_id}', 'App\Http\Controllers\EntryController@create');
 
-
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+    Route::post('/categories/reorder','App\Http\Controllers\CategoryController@reorder')->name('reorder_categories');
+});

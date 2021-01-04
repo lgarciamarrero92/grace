@@ -11,9 +11,6 @@ Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
 
-
-Vue.component('create-achievement-form', require('./Pages/Achievements/CreateAchievementForm.vue').default);
-
 const app = document.getElementById('app');
 
 new Vue({

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoryDataRowTable extends Migration
+class CreateCategoryDataInputTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateCategoryDataRowTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_data_row', function (Blueprint $table) {
+        Schema::create('category_data_input', function (Blueprint $table) {
             $table->id();
             $table->integer('category_id');
-            $table->integer('data_row_id');
+            $table->integer('data_input_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateCategoryDataRowTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_data_row');
+        Schema::dropIfExists('category_data_input');
     }
 }

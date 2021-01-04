@@ -33,34 +33,6 @@
                 }
             }
         },
-        "/api/achievements/user/{id}": {
-            "get": {
-                "tags": [
-                    "logros"
-                ],
-                "summary": "Mostrar logros de determinado usuario",
-                "operationId": "App\\Http\\Controllers\\AchievementsController::all_achievements_from_user_id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Id del usuario",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Mostrar logros de determinado usuario."
-                    },
-                    "default": {
-                        "description": "Ha ocurrido un error."
-                    }
-                }
-            }
-        },
         "/api/users": {
             "get": {
                 "tags": [
