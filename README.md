@@ -11,7 +11,7 @@ Software para Gestión de resultados académicos, científicos y extensionistas 
 **php artisan migrate
 **php artisan db:seed
 **php artisan voyager:admin your@email.com (si ya existe el usuario your@email.com)
-**php artisan voyager:admin your@email.com --create (para crear un nuevo admin
+**php artisan voyager:admin your@email.com --create (para crear un nuevo admin)
 
 ## License
 
