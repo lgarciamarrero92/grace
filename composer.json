@@ -19,6 +19,7 @@
         "laravel/jetstream": "^1.6",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
+        "orangehill/iseed": "^3.0",
         "tcg/voyager": "^1.4",
         "tightenco/ziggy": "^0.9.4"
     },
