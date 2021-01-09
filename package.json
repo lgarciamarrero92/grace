@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "@inertiajs/progress": "^0.2.2",
+        "@mdi/js": "^5.8.55",
         "vuetify": "^2.3.17"
     }
 }

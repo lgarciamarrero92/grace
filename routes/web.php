@@ -28,3 +28,5 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::post('/categories/reorder','App\Http\Controllers\CategoryController@reorder')->name('reorder_categories');
 });
+
+Route::get('/achievements/create', 'App\Http\Controllers\AchievementsController@create')->name('achievements.create');
