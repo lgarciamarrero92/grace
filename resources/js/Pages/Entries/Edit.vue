@@ -25,7 +25,7 @@
                                         {{category.title}}
                                     </h3>
 
-                                    <create-entry-form :inputs="inputs" :category="category" :entry="entry" :errors="errors"> </create-entry-form>
+                                    <create-edit-entry-form :inputs="inputs" :category="category" :entry="entry" :errors="errors"> </create-edit-entry-form>
 
                                 </v-card>
                             </v-scroll-y-transition>
@@ -42,11 +42,11 @@
 
 <script>
 import AppLayout from '@/Layouts/AppLayout'
-import CreateEntryForm from '@/Pages/Entries/CreateForm'
+import CreateEditEntryForm from '@/Pages/Entries/CreateEditForm'
 export default {
     components: {
         AppLayout,
-        CreateEntryForm
+        CreateEditEntryForm
     },
     props:{
         inputs: Array,

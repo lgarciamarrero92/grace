@@ -206,7 +206,7 @@
                 </div>
             </div>
         </nav>
-
+        <v-app>
         <!-- Page Heading -->
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -216,9 +216,11 @@
 
         <!-- Page Content -->
         <main>
-            <slot></slot>
+            
+                <slot></slot>
+            
         </main>
-
+        </v-app>
         <!-- Modal Portal -->
         <portal-target name="modal" multiple>
         </portal-target>
