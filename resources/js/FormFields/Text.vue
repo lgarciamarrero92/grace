@@ -1,12 +1,26 @@
 <template>
     <v-text-field
         :label="label"
+        @input="handleInput"
+        :value="value"
     >
     </v-text-field>
 </template>
 
 <script>
     export default {
-        props: ['details','label'],
+        props: ['value','details','label'],
+        data(){
+            return {
+            }
+        },
+        mounted() {
+            
+        },
+        methods: {
+            handleInput(value){
+                this.$emit('input',value)
+            }
+        },
     }
 </script>

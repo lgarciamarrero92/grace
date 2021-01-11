@@ -1,9 +1,25 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                DASHBOARD
-            </h2>
+            <v-row no-gutters>
+                <v-col>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        DASHBOARD
+                    </h2>
+                </v-col>
+                <v-spacer></v-spacer>
+                <v-col>
+                    <inertia-link :href="route('entries.create')">
+                        <v-btn
+                            class="float-right"
+                            depressed
+                            color="primary"
+                        >
+                            New Entry
+                        </v-btn>
+                    </inertia-link>
+                </v-col>
+            </v-row>
         </template>
 
         <div class="py-12">

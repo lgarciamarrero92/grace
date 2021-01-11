@@ -57,4 +57,9 @@ class User extends \TCG\Voyager\Models\User
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function entries()
+    {
+        return $this->belongsToMany('App\Models\Entry');
+    }
 }

@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class EntryRow extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'value'
+    ];
+    public function entry()
+    {
+        return $this->belongsTo('App\Models\Entry');
+    }
+    public function dataInput()
+    {
+        return $this->belongsTo('App\Models\DataInput');
+    }
 }

@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Create Entry
+                Edit Entry
             </h2>
         </template>
         <div class="py-12">
@@ -12,31 +12,11 @@
                         class="pa-4"
                         justify="space-between"
                     >
-                        <v-col cols="5">
-                            <v-treeview
-                                :items="items"
-                                :active.sync="active"
-                                open-on-click
-                                transition
-                                rounded
-                                activatable
-                            >
-                            </v-treeview>
-                        </v-col>
-                        <v-divider vertical></v-divider>
                         <v-col
                             class="d-flex text-center"
                         >
                             <v-scroll-y-transition mode="out-in">
-                                <div
-                                    v-if="!category"
-                                    class="title grey--text text--lighten-1 font-weight-light"
-                                    style="align-self: center;"
-                                >
-                                    Seleccione una categoría
-                                </div>
                                 <v-card
-                                    v-else
                                     class="pt-6 mx-auto"
                                     flat
                                     max-width="400"
@@ -45,7 +25,7 @@
                                         {{category.title}}
                                     </h3>
 
-                                    <create-entry-form :inputs="inputs" :category="category" :errors="errors"> </create-entry-form>
+                                    <create-entry-form :inputs="inputs" :category="category" :entry="entry" :errors="errors"> </create-entry-form>
 
                                 </v-card>
                             </v-scroll-y-transition>
@@ -70,28 +50,19 @@ export default {
     },
     props:{
         inputs: Array,
-        categories: Array,
+        entry: Object,
         category: Object,
         errors: Object
     },
     data() {
         return {
-            active: []
         }
     },
     mounted(){
-        console.log(this.errors)
     },
     computed: {
-        items(){
-            return this.categories
-        }
     },
     watch: {
-        active: function(value, oldValue){
-            const id = this.active[0]
-            this.$inertia.get(route('entries.create',id),{},{only: ['inputs','category','errors'],preserveState: true, preserveScroll: true})
-        }
     },
     methods: {
     },

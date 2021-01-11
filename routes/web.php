@@ -22,7 +22,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/entry/{category_id}', 'App\Http\Controllers\EntryController@create');
+Route::post('/entry/store', 'App\Http\Controllers\EntryController@store')->name('entries.store');
+Route::get('/entry/index', 'App\Http\Controllers\EntryController@index');
+Route::get('/entry/{category_id?}', 'App\Http\Controllers\EntryController@create')->name('entries.create');
+Route::get('/entry/{entry_id}/edit', 'App\Http\Controllers\EntryController@edit')->name('entries.edit');
+Route::post('/entry/{entry_id}/edit', 'App\Http\Controllers\EntryController@update')->name('entries.update');
+
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
