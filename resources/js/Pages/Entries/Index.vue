@@ -112,12 +112,15 @@
                 </v-row>
             </template>
         </v-data-iterator>
+        <confirm-dialog ref="confirmDialog"></confirm-dialog>
     </div>
 </template>
 
 <script>
+import ConfirmDialog from '@/Mixins/ConfirmDialog'
 export default {
     components: {
+        ConfirmDialog
     },
     props:{
     },
@@ -150,8 +153,9 @@ export default {
             })
         },
         handleDelete(id){
-            this.$inertia.delete(`entry/${id}`,{
-                onBefore: () => confirm('Are you sure?'),
+            this.$refs.confirmDialog.open('Delete', 'Are you sure?', { color: 'red' }).then((confirm) => {
+                if(confirm)
+                    this.$inertia.delete(`entry/${id}`)
             })
         },
     },
