@@ -5,15 +5,12 @@ import vuetify from './Plugins/vuetify'
 import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
-
+import { InertiaProgress } from '@inertiajs/progress'
+InertiaProgress.init()
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
-
-
-Vue.component('create-achievement-form', require('./Pages/Achievements/CreateAchievementForm.vue').default);
-
 const app = document.getElementById('app');
 
 new Vue({

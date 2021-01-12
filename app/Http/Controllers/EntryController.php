@@ -16,7 +16,7 @@ class EntryController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-       $entries = Auth::user()->entries()->with('category','entryRows')->get();
+       $entries = Auth::user()->entries()->with('category','entryRows.dataInput')->get();
        return ($entries);
     }
     public function create($category_id = null){
@@ -31,8 +31,8 @@ class EntryController extends Controller
         return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
     public function edit($entry_id){
-        $entry = Entry::where('id',$entry_id)->first();
-        $category = Category::where('id',$entry->category_id)->first();
+        $entry = Entry::where('id',$entry_id)->firstOrFail();
+        $category = Category::where('id',$entry->category_id)->firstOrFail();
 
         $inputs = $category->dataInputs()->with(['entryRows' => function ($query) use ($entry_id) {
             $query->where('entry_id', $entry_id);
@@ -57,6 +57,7 @@ class EntryController extends Controller
         $entry->category_id = $category_id;
         $entry->save();
         foreach ($inputs as $key => $input) {
+           if(!$request[$input->slug])continue;
            $entryRow = new EntryRow();
            $entryRow->value = $request[$input->slug];
            $entryRow->data_input_id = $input->id;
@@ -84,6 +85,7 @@ class EntryController extends Controller
         $entry = Entry::where('id',$entry_id)->first();
         foreach ($inputs as $key => $input) {
            $entry->entryRows()->where('data_input_id',$input->id)->delete();
+           if(!$request[$input->slug])continue;
            $entryRow = new EntryRow();
            $entryRow->value = $request[$input->slug];
            $entryRow->data_input_id = $input->id;
@@ -93,6 +95,13 @@ class EntryController extends Controller
         //Update updated_at timestamps in entry
         $entry->touch();
         //Redirect to same page
+        return redirect()->back();
+    }
+    public function delete($entry_id){
+        $entry = Entry::where('id',$entry_id)->firstOrFail();
+        $entry->entryRows()->delete();
+        $entry->users()->detach();
+        $entry->delete();
         return redirect()->back();
     }
     public function categories($category = null){
@@ -112,5 +121,10 @@ class EntryController extends Controller
             $children_data[] = $items;
         }
         return ['id' => $category->id, 'name'=>$category->title, 'children' => $children_data];
+    }
+    public function formFields(){
+        return [
+            'text' => '/FormFields/Text'
+        ];
     }
 }

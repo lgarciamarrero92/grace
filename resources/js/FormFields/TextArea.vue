@@ -1,12 +1,27 @@
 <template>
     <v-textarea
-        label="Text area"
+        :label="label"
+        @input="handleInput"
+        :value="value"
+        type="text"
     >
     </v-textarea>
 </template>
 
 <script>
     export default {
-        props: ['display_name','details'],
+        props: ['value','details','label'],
+        data(){
+            return {
+            }
+        },
+        mounted() {
+            
+        },
+        methods: {
+            handleInput(value){
+                this.$emit('input',value)
+            }
+        },
     }
 </script>

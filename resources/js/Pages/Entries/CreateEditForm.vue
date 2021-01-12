@@ -30,11 +30,11 @@
 
 <script>
 import TextField from '@/FormFields/Text'
-import TextareaField from '@/FormFields/TextArea'
+import Text_areaField from '@/FormFields/TextArea'
 export default {
     components: {
         TextField,
-        TextareaField
+        Text_areaField
     },
     props:{
         inputs: Array,
@@ -66,7 +66,7 @@ export default {
                 category_id: this.category.id
             }
             this.inputs.forEach(element => {
-                form[element.slug] = element.entry_rows?element.entry_rows[0].value:null
+                form[element.slug] = (element.entry_rows && element.entry_rows.length) ?element.entry_rows[0].value:null
             });
             form = this.$inertia.form(form,{
                 resetOnSuccess: this.entry?false:true //is in editing false else true

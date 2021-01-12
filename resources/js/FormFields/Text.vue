@@ -3,6 +3,7 @@
         :label="label"
         @input="handleInput"
         :value="value"
+        type="text"
     >
     </v-text-field>
 </template>

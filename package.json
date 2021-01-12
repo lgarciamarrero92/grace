@@ -14,7 +14,7 @@
         "@inertiajs/inertia-vue": "^0.2.0",
         "@tailwindcss/ui": "^0.6.0",
         "axios": "^0.19",
-        "cross-env": "^7.0",
+        "cross-env": "^7.0.3",
         "deepmerge": "^4.2.2",
         "laravel-jetstream": "^0.0.3",
         "laravel-mix": "^5.0.1",
@@ -22,15 +22,15 @@
         "portal-vue": "^2.1.7",
         "postcss-import": "^12.0.1",
         "resolve-url-loader": "^3.1.0",
-        "sass": "^1.29.0",
-        "sass-loader": "^10.1.0",
+        "sass": "^1.32.4",
+        "sass-loader": "^10.1.1",
         "tailwindcss": "^1.8.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "@inertiajs/progress": "^0.2.2",
-        "@mdi/js": "^5.8.55",
-        "vuetify": "^2.3.17"
+        "@inertiajs/progress": "^0.1",
+        "@mdi/font": "^5.8.55",
+        "vuetify": "^2.4.2"
     }
 }
