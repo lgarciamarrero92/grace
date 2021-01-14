@@ -8,6 +8,7 @@ use App\Models\EntryRow;
 use App\Models\Entry;
 use Inertia\Inertia;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class EntryController extends Controller
 {
@@ -15,12 +16,14 @@ class EntryController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function index(){
        $entries = Auth::user()->entries()->with('category','entryRows.dataInput')->get();
        return ($entries);
     }
+
     public function create($category_id = null){
-        
+
         $categories = $this->categories();
         if(!$category_id){
             return Inertia::render('Entries/Create',['categories' => $categories]);
@@ -30,6 +33,7 @@ class EntryController extends Controller
 
         return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
+
     public function edit($entry_id){
         $entry = Entry::where('id',$entry_id)->firstOrFail();
         $category = Category::where('id',$entry->category_id)->firstOrFail();
@@ -40,7 +44,9 @@ class EntryController extends Controller
 
         return Inertia::render('Entries/Edit',['entry' => $entry,'category' => $category,'inputs' => $inputs]);
     }
+
     public function store(Request $request){
+
         $category_id = $request->has('category_id') ? $request['category_id'] : -1;
         $inputs = Category::findOrFail($category_id)->dataInputs()->get();
         //Create validation rules
@@ -58,6 +64,17 @@ class EntryController extends Controller
         $entry->save();
         foreach ($inputs as $key => $input) {
            if(!$request[$input->slug])continue;
+           if(is_array($request[$input->slug])){
+                // Handle arrays
+               foreach($request[$input->slug] as $_input){
+                    $entryRow = new EntryRow();
+                    $entryRow->value = $_input;
+                    $entryRow->data_input_id = $input->id;
+                    $entryRow->entry()->associate($entry);
+                    $entryRow->save();
+               }
+               continue;
+           }
            $entryRow = new EntryRow();
            $entryRow->value = $request[$input->slug];
            $entryRow->data_input_id = $input->id;
@@ -69,6 +86,7 @@ class EntryController extends Controller
         //Redirect to same page
         return redirect()->back();
     }
+
     public function update(Request $request,$entry_id){
         $category_id = $request->has('category_id') ? $request['category_id'] : -1;
         $inputs = Category::findOrFail($category_id)->dataInputs()->get();
@@ -86,6 +104,17 @@ class EntryController extends Controller
         foreach ($inputs as $key => $input) {
            $entry->entryRows()->where('data_input_id',$input->id)->delete();
            if(!$request[$input->slug])continue;
+           if(is_array($request[$input->slug])){
+                // Handle arrays
+                foreach($request[$input->slug] as $_input){
+                    $entryRow = new EntryRow();
+                    $entryRow->value = $_input;
+                    $entryRow->data_input_id = $input->id;
+                    $entryRow->entry()->associate($entry);
+                    $entryRow->save();
+                }
+                continue;
+            }
            $entryRow = new EntryRow();
            $entryRow->value = $request[$input->slug];
            $entryRow->data_input_id = $input->id;
@@ -97,6 +126,7 @@ class EntryController extends Controller
         //Redirect to same page
         return redirect()->back();
     }
+
     public function delete($entry_id){
         $entry = Entry::where('id',$entry_id)->firstOrFail();
         $entry->entryRows()->delete();
@@ -104,6 +134,7 @@ class EntryController extends Controller
         $entry->delete();
         return redirect()->back();
     }
+
     public function categories($category = null){
         if(!$category){
             $tree = [];
@@ -122,9 +153,14 @@ class EntryController extends Controller
         }
         return ['id' => $category->id, 'name'=>$category->title, 'children' => $children_data];
     }
+
     public function formFields(){
         return [
-            'text' => '/FormFields/Text'
+            'text' => '/FormFields/Text',
+            'textarea' => '/FormFields/TextArea',
+            'date' => '/FormFields/DatePicker',
+            'select' => '/FormFields/Select',
+            'radiobutton' => '/FormFields/RadioButton',
         ];
     }
 }

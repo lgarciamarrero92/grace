@@ -31,10 +31,17 @@
 <script>
 import TextField from '@/FormFields/Text'
 import Text_areaField from '@/FormFields/TextArea'
+import DateField from '@/FormFields/DatePicker'
+import Select_dropdownField from '@/FormFields/Select'
+import Radio_btnField from '@/FormFields/RadioButton'
+
 export default {
     components: {
         TextField,
-        Text_areaField
+        Text_areaField,
+        DateField,
+        Select_dropdownField,
+        Radio_btnField
     },
     props:{
         inputs: Array,
@@ -66,7 +73,22 @@ export default {
                 category_id: this.category.id
             }
             this.inputs.forEach(element => {
-                form[element.slug] = (element.entry_rows && element.entry_rows.length) ?element.entry_rows[0].value:null
+
+                // Handle arrays
+                let ln = 0;
+                if(element.entry_rows)
+                    ln = element.entry_rows.length;
+
+                if(ln === 0)
+                    form[element.slug] = null;
+                else if(ln === 1)
+                    form[element.slug] = element.entry_rows[0].value;
+                else
+                    form[element.slug] = element.entry_rows.map(itm => {
+                        return itm.value;
+                    })
+                //form[element.slug] = (element.entry_rows && element.entry_rows.length) ?element.entry_rows[0].value:null
+
             });
             form = this.$inertia.form(form,{
                 resetOnSuccess: this.entry?false:true //is in editing false else true

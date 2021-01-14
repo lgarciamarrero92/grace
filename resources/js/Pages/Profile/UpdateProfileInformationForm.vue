@@ -105,7 +105,6 @@
                 photoPreview: null,
             }
         },
-
         methods: {
             updateProfileInformation() {
                 if (this.$refs.photo) {
@@ -137,7 +136,7 @@
                 }).then(() => {
                     this.photoPreview = null
                 });
-            },
+            }
         },
     }
 </script>
