@@ -31,7 +31,7 @@ class EntryController extends Controller
         $category = Category::where('id',$category_id)->first();
         $inputs = Category::findOrFail($category_id)->dataInputs()->get();
 
-        return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
+        return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs, 'formFields'=> Entry::formFields()]);
     }
 
     public function edit($entry_id){
@@ -42,7 +42,7 @@ class EntryController extends Controller
             $query->where('entry_id', $entry_id);
         }])->get();
 
-        return Inertia::render('Entries/Edit',['entry' => $entry,'category' => $category,'inputs' => $inputs]);
+        return Inertia::render('Entries/Edit',['entry' => $entry,'category' => $category,'inputs' => $inputs, 'formFields'=> Entry::formFields()]);
     }
 
     public function store(Request $request){
@@ -152,15 +152,5 @@ class EntryController extends Controller
             $children_data[] = $items;
         }
         return ['id' => $category->id, 'name'=>$category->title, 'children' => $children_data];
-    }
-
-    public function formFields(){
-        return [
-            'text' => '/FormFields/Text',
-            'textarea' => '/FormFields/TextArea',
-            'date' => '/FormFields/DatePicker',
-            'select' => '/FormFields/Select',
-            'radiobutton' => '/FormFields/RadioButton',
-        ];
     }
 }

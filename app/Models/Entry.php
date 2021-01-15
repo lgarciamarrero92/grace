@@ -20,4 +20,29 @@ class Entry extends Model
     {
         return $this->belongsToMany('App\Models\User');
     }
+    static function formFields()
+    { 
+        return [
+            (object)[
+                'code' => 'text',
+                'component' => '/FormFields/Text'
+            ],
+            (object)[
+                'code' => 'textarea',
+                'component' => '/FormFields/TextArea'
+            ],
+            (object)[
+                'code' => 'date',
+                'component' => '/FormFields/DatePicker'
+            ],
+            (object)[
+                'code' => 'select',
+                'component' => '/FormFields/Select'
+            ],
+            (object)[
+                'code' => 'radiobutton',
+                'component' => '/FormFields/RadioButton'
+            ]
+        ];
+    }
 }
