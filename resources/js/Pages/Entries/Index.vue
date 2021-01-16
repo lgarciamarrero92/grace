@@ -56,7 +56,16 @@
                             >
                                 <v-icon>mdi-arrow-down</v-icon>
                             </v-btn>
+
+
                         </v-btn-toggle>
+                        <v-btn
+                            icon
+                            color="white"
+                            @click="expand_all = !expand_all;items.forEach(item=>{item.show_tags=false;item.show_content=false;})"
+                        >
+                            <v-icon>{{ expand_all ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                        </v-btn>
                     </template>
                 </v-toolbar>
             </template>
@@ -68,45 +77,100 @@
                         cols="6"
                     >
                         <v-card>
-                            <v-card-title>
-                                {{item.category.title}}
+                            <v-card-title
+                                class="d-flex justify-space-between">
+                                    <span
+                                        @click="item.show_content = !item.show_content">
+                                        {{item.category.title}}
+                                    </span>
+                                    <span>
+                                        <v-rating
+                                            v-model="item.rating"
+                                            color="amber"
+                                            dense
+                                            half-increments
+                                            size="20"
+                                            hover
+                                        ></v-rating>
+                                    </span>
                             </v-card-title>
 
-                            <v-card-text>
-                                <v-rating
-                                    :value="4.5"
-                                    color="amber"
-                                    dense
-                                    half-increments
-                                    readonly
-                                    size="20"
-                                ></v-rating>
-                                <div
-                                    v-for="(entry,index) in item.entry_rows"
-                                    :key="index"
-                                >
-                                    {{entry.data_input.display_name}}: {{ entry.value }}
+                            <v-expand-transition>
+                                <div v-show="item.show_content || expand_all">
+                                    <v-card-text>
+                                        <div
+                                            v-for="(entry,index) in item.entry_rows"
+                                            :key="index"
+                                        >
+                                            <strong>{{ entry[0].data_input.display_name }}</strong>:
+                                            <span
+                                                class="mr-1"
+                                                v-for="(elm, idx) in entry"
+                                                :key="idx">
+                                                {{ elm.value }}
+                                            </span>
+                                        </div>
+                                    </v-card-text>
                                 </div>
+                            </v-expand-transition>
 
-                            </v-card-text>
-                            <v-card-actions>
-                                <inertia-link :href="route('entries.edit',item.id)">
-                                    <v-btn
-                                        text
-                                        color="deep-purple accent-4"
-                                    >
-                                        Edit
-                                    </v-btn>
-                                </inertia-link>
-                                
-                                <v-btn
-                                    text
-                                    color="error"
-                                    @click="handleDelete(item.id)"
+                            <v-card-actions
+                                class="d-flex justify-space-between"
+                            >
+                                <span
+                                    class="justify-sm-start"
                                 >
-                                    Delete
+
+                                    <inertia-link :href="route('entries.edit',item.id)">
+                                        <v-btn
+                                            class="pa-0 ml-1"
+                                            text
+                                            color="deep-purple accent-4"
+                                        >
+                                            Edit
+                                        </v-btn>
+                                    </inertia-link>
+
+                                    <v-btn
+                                        class="pa-0"
+                                        text
+                                        color="error"
+                                        @click="handleDelete(item.id)"
+                                    >
+                                        Delete
+                                    </v-btn>
+                                </span>
+
+                                <v-btn
+                                    class="float-right"
+                                    icon
+                                    color="orange lighten-2"
+                                    @click="item.show_tags = !item.show_tags"
+                                >
+                                    <v-icon>{{ item.show_tags ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
                                 </v-btn>
+
+
                             </v-card-actions>
+                            <v-expand-transition>
+
+                                <div v-show="item.show_tags || expand_all">
+                                    <v-spacer></v-spacer>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <v-combobox
+                                            v-model="item.selected_tags"
+                                            :items="$data.tags"
+                                            label="Tags"
+                                            multiple
+                                            chips
+                                            deletable-chips
+                                            hide-selected
+                                        >
+                                        </v-combobox>
+                                    </v-card-text>
+                                </div>
+                            </v-expand-transition>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -134,7 +198,9 @@ export default {
             keys: [
                 'name',
                 'titulo'
-            ]
+            ],
+            expand_all: false,
+            tags: ['Tag1', 'Tag2', 'Tag3']
         }
     },
     mounted(){
@@ -148,7 +214,33 @@ export default {
         getEntries(){
             this.isBusy = true
             axios.get('/entries').then(res => {
-                this.items = res.data
+                //this.items = res.data
+
+                this.items = res.data.map(elm => {
+                    let n_elm = elm;
+                    let entry_rows = {};
+                    let _title = '';
+                    elm.entry_rows.forEach(item => {
+                        if(item.data_input.slug === 'titulo')
+                            _title = item.value;
+                        if(entry_rows.hasOwnProperty(item.data_input_id)){
+                            entry_rows[item.data_input_id].push(item);
+                        }
+                        else{
+                            entry_rows[item.data_input_id] = [item];
+                        }
+                    });
+                    n_elm.entry_rows = entry_rows;
+                    n_elm.rating = 2.5;
+                    n_elm.show_tags = false;
+                    n_elm.show_content = true;
+                    n_elm.title = _title;
+                    n_elm.selected_tags = []
+                    return n_elm;
+                });
+
+                console.log(this.items);
+
                 this.isBusy = false
             })
         },
