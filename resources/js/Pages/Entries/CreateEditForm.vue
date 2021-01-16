@@ -1,7 +1,7 @@
 <template>
     <v-form @submit.prevent="entry?form.post(route('entries.update',entry.id)):form.post(route('entries.store'))" ref="form">
         <v-row>
-            <v-col cols="12" v-for="(input, index) in inputs" :key="index">
+            <v-col cols="12" v-for="(input, index) in orderedInputs" :key="index">
                 <component v-if="$options.components[getComponentName(input.type)]" :is="getComponentName(input.type)" :label="input.display_name" :details="input.details" v-model="form[input.slug]"></component>
                 <v-alert v-if="errors[input.slug]" type="error" dense outlined> {{errors[input.slug]}} </v-alert>
             </v-col>
@@ -45,9 +45,6 @@ export default {
         }
     },
     mounted(){
-        this.inputs.sort((a,b)=>{
-            return a.order-b.order
-        })
     },
     created(){
         let formFields = this.$inertia.page.props.formFields
@@ -57,6 +54,11 @@ export default {
         });
     },
     computed: {
+        orderedInputs(){
+            return this.inputs.sort((a,b)=>{
+                return a.order-b.order
+            })
+        }
     },
     watch: {
         'category.id': function () {
