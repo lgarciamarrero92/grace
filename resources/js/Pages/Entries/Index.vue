@@ -156,11 +156,18 @@
 
                                 <div v-show="item.show_tags || expand_all">
                                     <v-spacer></v-spacer>
-
                                     <v-divider></v-divider>
-
                                     <v-card-text>
-                                        Tags management here
+                                        <v-combobox
+                                            v-model="$data.selected_tags"
+                                            :items="$data.tags"
+                                            label="Tags"
+                                            multiple
+                                            chips
+                                            deletable-chips
+                                            hide-selected
+                                        >
+                                        </v-combobox>
                                     </v-card-text>
                                 </div>
                             </v-expand-transition>
@@ -192,7 +199,9 @@ export default {
                 'name',
                 'titulo'
             ],
-            expand_all: false
+            expand_all: false,
+            tags: ['Tag1', 'Tag2', 'Tag3'],
+            selected_tags: []
         }
     },
     mounted(){

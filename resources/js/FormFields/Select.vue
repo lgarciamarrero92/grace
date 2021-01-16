@@ -8,6 +8,7 @@
         @input="handleInput"
         chips
         deletable-chips
+        hide-selected
     ></v-combobox>
     <v-select
         v-else
@@ -19,6 +20,7 @@
         deletable-chips
         :multiple="JSON.parse(details).multiple"
         @input="handleInput"
+        hide-selected
     ></v-select>
 </template>
 
