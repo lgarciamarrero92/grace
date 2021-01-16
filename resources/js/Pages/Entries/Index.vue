@@ -159,7 +159,7 @@
                                     <v-divider></v-divider>
                                     <v-card-text>
                                         <v-combobox
-                                            v-model="$data.selected_tags"
+                                            v-model="item.selected_tags"
                                             :items="$data.tags"
                                             label="Tags"
                                             multiple
@@ -200,8 +200,7 @@ export default {
                 'titulo'
             ],
             expand_all: false,
-            tags: ['Tag1', 'Tag2', 'Tag3'],
-            selected_tags: []
+            tags: ['Tag1', 'Tag2', 'Tag3']
         }
     },
     mounted(){
@@ -236,6 +235,7 @@ export default {
                     n_elm.show_tags = false;
                     n_elm.show_content = true;
                     n_elm.title = _title;
+                    n_elm.selected_tags = []
                     return n_elm;
                 });
 
