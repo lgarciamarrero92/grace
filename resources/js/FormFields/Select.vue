@@ -7,6 +7,7 @@
         multiple
         @input="handleInput"
         chips
+        deletable-chips
     ></v-combobox>
     <v-select
         v-else
@@ -15,6 +16,7 @@
         :menu-props="{ maxHeight: '400' }"
         :label="label"
         chips
+        deletable-chips
         :multiple="JSON.parse(details).multiple"
         @input="handleInput"
     ></v-select>
