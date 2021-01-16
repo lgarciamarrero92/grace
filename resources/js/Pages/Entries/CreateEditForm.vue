@@ -47,7 +47,7 @@ export default {
     mounted(){
     },
     created(){
-        let formFields = this.$inertia.page.props.formFields
+        let formFields = this.$inertia.page.props.formFields;
         this.inputs.forEach(input => {
             const componentConfig = require(`${formFields[input.type]}`)
             this.$options.components[this.getComponentName(input.type)] = componentConfig.default
@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         getComponentName(code){
-            return (code + '-field')
+            return (code + '-field');
         },
         initForm(){
             var form = {

@@ -9,8 +9,8 @@ return [
         'text' => './FormFields/Text',
         'textarea' => './FormFields/TextArea',
         'date' => './FormFields/DatePicker',
-        'select' => './FormFields/Select',
-        'radiobutton' => './FormFields/RadioButton'
+        'select_dropdown' => './FormFields/Select',
+        'radio_btn' => './FormFields/RadioButton'
     ]
 
 ];
