@@ -85,7 +85,16 @@
                                     v-for="(entry,index) in item.entry_rows"
                                     :key="index"
                                 >
-                                    {{entry.data_input.display_name}}: {{ entry.value }}
+                                    <strong>{{ entry[0].data_input.display_name }}</strong>:
+
+                                    <span
+                                        style="margin-right: 10px;"
+                                        v-for="(elm, idx) in entry"
+                                        :key="idx">
+                                        {{ elm.value }}
+
+                                    </span>
+
                                 </div>
 
                             </v-card-text>
@@ -98,7 +107,7 @@
                                         Edit
                                     </v-btn>
                                 </inertia-link>
-                                
+
                                 <v-btn
                                     text
                                     color="error"
@@ -148,7 +157,24 @@ export default {
         getEntries(){
             this.isBusy = true
             axios.get('/entries').then(res => {
-                this.items = res.data
+                //this.items = res.data
+
+                this.items = res.data.map(elm => {
+                    let n_elm = elm;
+                    let entry_rows = {};
+                    elm.entry_rows.forEach(item => {
+                        if(entry_rows.hasOwnProperty(item.data_input_id)){
+                            entry_rows[item.data_input_id].push(item);
+                        }
+                        else{
+                            entry_rows[item.data_input_id] = [item];
+                        }
+                    });
+                    n_elm.entry_rows = entry_rows;
+                    return n_elm;
+                });
+
+
                 this.isBusy = false
             })
         },
