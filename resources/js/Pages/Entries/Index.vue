@@ -69,18 +69,26 @@
                     >
                         <v-card>
                             <v-card-title>
-                                {{item.category.title}}
+                                <span
+                                    style="width: 70%;">
+                                   {{item.category.title}}
+                                </span>
+                                <span
+                                    style="width: 30%;">
+                                    <v-rating
+                                        style="float: right"
+                                        :value="4.5"
+                                        color="amber"
+                                        dense
+                                        half-increments
+                                        readonly
+                                        size="20"
+                                    ></v-rating>
+                                </span>
                             </v-card-title>
 
                             <v-card-text>
-                                <v-rating
-                                    :value="4.5"
-                                    color="amber"
-                                    dense
-                                    half-increments
-                                    readonly
-                                    size="20"
-                                ></v-rating>
+
                                 <div
                                     v-for="(entry,index) in item.entry_rows"
                                     :key="index"
