@@ -31,7 +31,7 @@ class EntryController extends Controller
         $category = Category::where('id',$category_id)->first();
         $inputs = Category::findOrFail($category_id)->dataInputs()->get();
 
-        return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs, 'formFields'=> Entry::formFields()]);
+        return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
 
     public function edit($entry_id){
@@ -42,7 +42,7 @@ class EntryController extends Controller
             $query->where('entry_id', $entry_id);
         }])->get();
 
-        return Inertia::render('Entries/Edit',['entry' => $entry,'category' => $category,'inputs' => $inputs, 'formFields'=> Entry::formFields()]);
+        return Inertia::render('Entries/Edit',['entry' => $entry,'category' => $category,'inputs' => $inputs]);
     }
 
     public function store(Request $request){

@@ -80,7 +80,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.errors)
+        
     },
     computed: {
         items(){

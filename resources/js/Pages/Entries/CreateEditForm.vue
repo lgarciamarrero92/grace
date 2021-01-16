@@ -2,7 +2,7 @@
     <v-form @submit.prevent="entry?form.post(route('entries.update',entry.id)):form.post(route('entries.store'))" ref="form">
         <v-row>
             <v-col cols="12" v-for="(input, index) in inputs" :key="index">
-                <component :is="input.type+'-field'" :label="input.display_name" :details="input.details" v-model="form[input.slug]"></component>
+                <component v-if="$options.components[getComponentName(input.type)]" :is="getComponentName(input.type)" :label="input.display_name" :details="input.details" v-model="form[input.slug]"></component>
                 <v-alert v-if="errors[input.slug]" type="error" dense outlined> {{errors[input.slug]}} </v-alert>
             </v-col>
             <v-col cols="12">
@@ -29,19 +29,8 @@
 </template>
 
 <script>
-import TextField from '@/FormFields/Text'
-import Text_areaField from '@/FormFields/TextArea'
-import DateField from '@/FormFields/DatePicker'
-import Select_dropdownField from '@/FormFields/Select'
-import Radio_btnField from '@/FormFields/RadioButton'
-
 export default {
-    components: {
-        TextField,
-        Text_areaField,
-        DateField,
-        Select_dropdownField,
-        Radio_btnField
+    components:{
     },
     props:{
         inputs: Array,
@@ -60,6 +49,13 @@ export default {
             return a.order-b.order
         })
     },
+    created(){
+        let formFields = this.$inertia.page.props.formFields
+        this.inputs.forEach(input => {
+            const componentConfig = require(`${formFields[input.type]}`)
+            this.$options.components[this.getComponentName(input.type)] = componentConfig.default
+        });
+    },
     computed: {
     },
     watch: {
@@ -68,6 +64,9 @@ export default {
         }
     },
     methods: {
+        getComponentName(code){
+            return (code + '-field')
+        },
         initForm(){
             var form = {
                 category_id: this.category.id

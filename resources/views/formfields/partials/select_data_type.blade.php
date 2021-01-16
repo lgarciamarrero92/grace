@@ -7,9 +7,9 @@
 
 <select class="form-control select2" name="{{ $row->field }}">
     <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : 'text'; ?>
-    @foreach (App\Models\Entry::formFields() as $formField)
-        <option value="{{ $formField->code }}" @if($default == $formField->code && $selected_value === NULL) selected="selected" @endif @if($selected_value == $formField->code) selected="selected" @endif>
-            {{ $formField->code }}
+    @foreach (config('constants.formFields') as $code => $value)
+        <option value="{{ $code }}" @if($default == $code && $selected_value === NULL) selected="selected" @endif @if($selected_value == $code) selected="selected" @endif>
+            {{ $code }}
         </option>
     @endforeach
 </select>
