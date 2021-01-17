@@ -9,8 +9,11 @@ return [
         'text' => './FormFields/Text',
         'textarea' => './FormFields/TextArea',
         'date' => './FormFields/DatePicker',
-        'select_dropdown' => './FormFields/Select',
-        'radio_btn' => './FormFields/RadioButton'
+        'select' => './FormFields/Select',
+        'radiobutton' => './FormFields/RadioButton',
+        'combobox' => './FormFields/ComboBox',
+        'slider' => './FormFields/Slider',
+        'autocomplete' => './FormFields/AutoComplete'
     ]
 
 ];

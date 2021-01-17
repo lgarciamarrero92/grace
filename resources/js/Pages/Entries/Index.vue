@@ -167,6 +167,15 @@
                                             deletable-chips
                                             hide-selected
                                         >
+                                            <template v-slot:no-data>
+                                                <v-list-item>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>
+                                                    No results found. Press <kbd>enter</kbd> to create a new one
+                                                    </v-list-item-title>
+                                                </v-list-item-content>
+                                                </v-list-item>
+                                            </template>
                                         </v-combobox>
                                     </v-card-text>
                                 </div>

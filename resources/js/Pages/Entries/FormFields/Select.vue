@@ -1,17 +1,5 @@
 <template>
-    <v-combobox
-        v-if="JSON.parse(details).combobox"
-        v-model="$data.selected"
-        :items="JSON.parse(details).options"
-        :label="label"
-        multiple
-        @input="handleInput"
-        chips
-        deletable-chips
-        hide-selected
-    ></v-combobox>
     <v-select
-        v-else
         v-model="$data.selected"
         :items="JSON.parse(details).options"
         :menu-props="{ maxHeight: '400' }"
