@@ -13,7 +13,8 @@ return [
         'radiobutton' => './FormFields/RadioButton',
         'combobox' => './FormFields/ComboBox',
         'slider' => './FormFields/Slider',
-        'autocomplete' => './FormFields/AutoComplete'
+        'autocomplete' => './FormFields/AutoComplete',
+        'checkbox' => './FormFields/CheckBox'
     ]
 
 ];
