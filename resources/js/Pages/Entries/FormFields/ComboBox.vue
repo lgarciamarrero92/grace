@@ -1,12 +1,11 @@
 <template>
     <v-combobox
-        v-model="$data.selected"
+        :value="value"
         :items="items"
         :loading="isLoading"
         :search-input.sync="search"
         :multiple="multiple == 1"
-        @input="handleInput"
-        @change="search = ''"
+        @change="handleChange"
         chips
         deletable-chips
         hide-selected
@@ -54,21 +53,20 @@
             }
         },
         methods: {
-            handleInput(value){
-                this.$emit('input', this.$data.selected);
+            handleChange(value){
+                this.search = ''
+                if(value.length){
+                    let last = value[value.length-1]
+                    if(!last){
+                        value.pop()
+                    }
+                }
+                this.$emit('input', value);
             }
         },
         computed: {
         },
         watch: {
-            selected(val){
-                console.log(val)
-                if(!val.length)return
-                let last = val[val.length-1]
-                if(!last){
-                    this.$nextTick(() => this.selected.pop())
-                }
-            },
             search(val) {
                 if(!JSON.parse(this.details)["search-api"]){
                     return
