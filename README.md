@@ -20,6 +20,19 @@ Crear usuario administrador
 php artisan voyager:admin your@email.com (si ya existe el usuario your@email.com)
 php artisan voyager:admin your@email.com --create (para crear un nuevo admin)
 ```
+## Documentation
+### Form Fields
+#### Combobox (details)
+```bash
+{
+    "validation": {
+        "rule": "required|array|min:1|max:10" //Validation rules
+    },
+    "options": ["Option1","Option2"],//In case of static options manually
+    "options-api": "/api/users",//In case of static options fetched from api
+    "search-api": "/api/users/search",//In case of dynamic options fetched from api, api has to receive a parameter `query`
+}
+```
 ## License
 
 Grace is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

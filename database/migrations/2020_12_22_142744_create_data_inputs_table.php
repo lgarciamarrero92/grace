@@ -17,8 +17,10 @@ class CreateDataInputsTable extends Migration
             $table->id();
             $table->string('display_name', 255);
             $table->string('type', 255);
-            $table->integer('order')->default(1);
+            $table->boolean('required')->default(false);
+            $table->boolean('multiple')->default(false);
             $table->text('details')->nullable();
+            $table->integer('order')->default(1);
             $table->timestamps();
         });
     }

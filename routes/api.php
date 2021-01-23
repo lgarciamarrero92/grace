@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('users', 'App\Http\Controllers\Api\UserController@index');
+Route::get('users/search', 'App\Http\Controllers\Api\UserController@search');
 Route::get('inputs-from-id/{id}', 'App\Http\Controllers\AchievementsController@all_inputs_from_id');
 Route::get('/achievements/user/{id}', 'App\Http\Controllers\AchievementsController@all_achievements_from_user_id')->name('achievements.show');

@@ -2,7 +2,15 @@
     <v-form @submit.prevent="entry?form.post(route('entries.update',entry.id)):form.post(route('entries.store'))" ref="form">
         <v-row>
             <v-col cols="12" v-for="(input, index) in orderedInputs" :key="index">
-                <component v-if="$options.components[getComponentName(input.type)]" :is="getComponentName(input.type)" :label="input.display_name" :details="input.details" v-model="form[input.slug]"></component>
+                <component 
+                    v-if="$options.components[getComponentName(input.type)]" 
+                    :is="getComponentName(input.type)" 
+                    :label="input.display_name" 
+                    :required="input.required" 
+                    :multiple="input.multiple" 
+                    :details="input.details"
+                    v-model="form[input.slug]"
+                ></component>
                 <v-alert v-if="errors[input.slug]" type="error" dense outlined> {{errors[input.slug]}} </v-alert>
             </v-col>
             <v-col cols="12">
@@ -82,7 +90,7 @@ export default {
 
                 if(ln === 0)
                     form[element.slug] = null;
-                else if(ln === 1)
+                else if(ln === 1 && !element.multiple)
                     form[element.slug] = element.entry_rows[0].value;
                 else
                     form[element.slug] = element.entry_rows.map(itm => {
