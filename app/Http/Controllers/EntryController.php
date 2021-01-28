@@ -9,6 +9,7 @@ use App\Models\Entry;
 use Inertia\Inertia;
 use Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class EntryController extends Controller
 {
@@ -107,6 +108,19 @@ class EntryController extends Controller
            if(is_array($request[$input->slug])){
                 // Handle arrays
                 foreach($request[$input->slug] as $_input){
+                    if(gettype($_input) == 'object'){
+                        $filename = time() . $_input->getClientOriginalName();
+
+                        $_input->storeAs('public/documents', $filename);
+
+                        $entryRow = new EntryRow();
+                        $entryRow->value = $filename;
+                        $entryRow->data_input_id = $input->id;
+                        $entryRow->entry()->associate($entry);
+                        $entryRow->save();
+                        continue;
+                    }
+
                     $entryRow = new EntryRow();
                     $entryRow->value = $_input;
                     $entryRow->data_input_id = $input->id;

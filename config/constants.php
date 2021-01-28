@@ -14,7 +14,8 @@ return [
         'combobox' => './FormFields/ComboBox',
         'slider' => './FormFields/Slider',
         'autocomplete' => './FormFields/AutoComplete',
-        'checkbox' => './FormFields/CheckBox'
+        'checkbox' => './FormFields/CheckBox',
+        'fileinput' => './FormFields/FileInput'
     ]
 
 ];

@@ -17,7 +17,7 @@
         props: ['value','details','label'],
         data(){
             return {
-                selected: (this.value!= null && typeof(this.value) === 'object')? this.value:[],
+                selected: (this.value!= null && typeof(this.value) === 'object')? this.value:[]
             }
         },
         mounted() {
