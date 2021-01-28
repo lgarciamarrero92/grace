@@ -1,16 +1,19 @@
 <template>
     <v-textarea
-        :label="label"
         @input="handleInput"
         :value="value"
         type="text"
     >
+        <template v-slot:label>
+          <span v-if="required" style="color: red">*</span>
+          {{label}}
+        </template>
     </v-textarea>
 </template>
 
 <script>
     export default {
-        props: ['value','details','label'],
+        props: ['value','details','label','required'],
         data(){
             return {
             }

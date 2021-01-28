@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Illuminate\Database\Seeder;
 
 class DataTypesTableSeeder extends Seeder
@@ -107,7 +105,7 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":"order","order_display_column":"display_name","order_direction":"asc","default_search_key":null,"scope":null}',
                 'created_at' => '2021-01-05 00:24:33',
-                'updated_at' => '2021-01-05 00:27:21',
+                'updated_at' => '2021-01-23 20:01:00',
             ),
         ));
         

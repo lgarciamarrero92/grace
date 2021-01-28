@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Illuminate\Database\Seeder;
 
 class DataRowsTableSeeder extends Seeder
@@ -584,7 +582,7 @@ class DataRowsTableSeeder extends Seeder
                 'id' => 36,
                 'data_type_id' => 5,
                 'field' => 'details',
-                'type' => 'text_area',
+                'type' => 'code_editor',
                 'display_name' => 'Details',
                 'required' => 0,
                 'browse' => 0,
@@ -592,7 +590,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{}',
+                'details' => '{"default":"{}"}',
                 'order' => 5,
             ),
             36 => 
@@ -626,6 +624,38 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '{}',
                 'order' => 7,
+            ),
+            38 => 
+            array (
+                'id' => 39,
+                'data_type_id' => 5,
+                'field' => 'required',
+                'type' => 'checkbox',
+                'display_name' => 'Required',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"on":"Yes","off":"No","checked":false}',
+                'order' => 4,
+            ),
+            39 => 
+            array (
+                'id' => 40,
+                'data_type_id' => 5,
+                'field' => 'multiple',
+                'type' => 'checkbox',
+                'display_name' => 'Multiple',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"on":"Yes","off":"No","checked":false}',
+                'order' => 5,
             ),
         ));
         

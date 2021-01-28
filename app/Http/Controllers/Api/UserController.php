@@ -28,4 +28,8 @@ class UserController extends Controller
     {
         return User::all();
     }
+    public function search(Request $request){
+        if(!$request['query'])return;
+        return User::whereRaw('lower(name) like ? ', '%' . strtolower($request['query']) . '%')->get();
+    }
 }

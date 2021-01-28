@@ -10,12 +10,16 @@
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
             v-model="value"
-            :label="label"
             prepend-icon="mdi-calendar"
             readonly
             v-bind="attrs"
             v-on="on"
-          ></v-text-field>
+          >
+            <template v-slot:label>
+              <span v-if="required" style="color: red">*</span>
+              {{label}}
+            </template>
+          </v-text-field>
         </template>
         <v-date-picker
           v-if="JSON.parse(details).type == 'month'"
@@ -33,7 +37,7 @@
 
 <script>
     export default {
-        props: ['value','details','label'],
+        props: ['value','details','label','required'],
         data(){
             return {
                 _value: this.value,
