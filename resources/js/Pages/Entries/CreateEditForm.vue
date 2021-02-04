@@ -31,6 +31,9 @@
             top
             right
         >
+            <v-icon>
+                mdi-check
+            </v-icon>
             All saved successfully
         </v-snackbar>
     </v-form>
