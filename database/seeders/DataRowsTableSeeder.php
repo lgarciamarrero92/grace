@@ -12,8 +12,6 @@ class DataRowsTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         \DB::table('data_rows')->delete();
         
         \DB::table('data_rows')->insert(array (
@@ -656,6 +654,38 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '{"on":"Yes","off":"No","checked":false}',
                 'order' => 5,
+            ),
+            40 => 
+            array (
+                'id' => 41,
+                'data_type_id' => 4,
+                'field' => 'identifier',
+                'type' => 'text',
+                'display_name' => 'Identifier',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 0,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"slugify":{"origin":"title","forceUpdate":true}}',
+                'order' => 7,
+            ),
+            41 => 
+            array (
+                'id' => 42,
+                'data_type_id' => 5,
+                'field' => 'identifier',
+                'type' => 'text',
+                'display_name' => 'Identifier',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 0,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"slugify":{"origin":"display_name","forceUpdate":true}}',
+                'order' => 4,
             ),
         ));
         

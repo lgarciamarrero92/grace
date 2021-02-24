@@ -17,6 +17,7 @@ class CreateDataInputsTable extends Migration
             $table->id();
             $table->string('display_name', 255);
             $table->string('type', 255);
+            $table->string('identifier')->unique();
             $table->boolean('required')->default(false);
             $table->boolean('multiple')->default(false);
             $table->text('details')->nullable();

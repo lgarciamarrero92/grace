@@ -19,6 +19,7 @@ class CreateEntryRowsTable extends Migration
             $table->integer('data_input_id');
             $table->text('value');
             $table->integer('order')->default(1);
+            $table->text('details')->nullable();
             $table->timestamps();
         });
     }

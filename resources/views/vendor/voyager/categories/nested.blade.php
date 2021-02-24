@@ -21,7 +21,7 @@
                         '_field_trans'        => json_encode($item->getTranslationsOf('title'))
                     ])
                 @endif
-                <span>{{ $item->title }}</span> 
+                <span>{{ $item->title }} ({{$item->identifier}})</span> 
                 <small class="url">
                     @foreach ($item->dataInputs()->get()->sortBy('order') as $index => $input)
                             @if ($index > 0)

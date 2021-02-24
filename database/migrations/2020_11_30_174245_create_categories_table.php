@@ -20,6 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->integer('rgt')->nullable();
             $table->integer('depth')->nullable();
             $table->string('title', 255);
+            $table->string('identifier')->unique();
             $table->integer('order')->default(1);
             $table->timestamps();
         });

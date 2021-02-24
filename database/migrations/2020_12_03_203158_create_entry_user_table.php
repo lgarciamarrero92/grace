@@ -17,6 +17,7 @@ class CreateEntryUserTable extends Migration
             $table->id();
             $table->integer('entry_id');
             $table->integer('user_id');
+            $table->integer('category_id');
             $table->timestamps();
         });
     }
