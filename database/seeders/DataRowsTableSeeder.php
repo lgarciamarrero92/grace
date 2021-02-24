@@ -12,6 +12,8 @@ class DataRowsTableSeeder extends Seeder
      */
     public function run()
     {
+        
+
         \DB::table('data_rows')->delete();
         
         \DB::table('data_rows')->insert(array (
@@ -508,7 +510,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"sort":{"field":"order","direction":"asc"},"model":"App\\\\Models\\\\DataInput","table":"data_inputs","type":"belongsToMany","column":"id","key":"id","label":"display_name","pivot_table":"category_data_input","pivot":"1","taggable":"0"}',
+                'details' => '{"sort":{"field":"order","direction":"asc"},"model":"App\\\\Models\\\\DataInput","table":"data_inputs","type":"belongsToMany","column":"id","key":"id","label":"identifier","pivot_table":"category_data_input","pivot":"1","taggable":"0"}',
                 'order' => 10,
             ),
             31 => 
