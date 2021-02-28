@@ -121,7 +121,7 @@
                                     class="justify-sm-start"
                                 >
 
-                                    <inertia-link :href="route('entries.edit',item.id)">
+                                    <inertia-link :href="route('entries.edit',[item.entry_id,{'category_id': item.category_id}])">
                                         <v-btn
                                             class="pa-0 ml-1"
                                             text
@@ -135,7 +135,7 @@
                                         class="pa-0"
                                         text
                                         color="error"
-                                        @click="handleDelete(item.id)"
+                                        @click="handleDelete(item.entry_id)"
                                     >
                                         Delete
                                     </v-btn>

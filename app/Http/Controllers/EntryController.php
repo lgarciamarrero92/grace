@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\EntryRow;
+use App\Models\EntryUser;
 use App\Models\Entry;
+use App\Models\User;
+use DB;
 use Inertia\Inertia;
 use Auth;
 use Illuminate\Support\Facades\Log;
@@ -19,8 +22,8 @@ class EntryController extends Controller
     }
 
     public function index(){
-       $entries = Auth::user()->entries()->with('category','entryRows.dataInput')->get();
-       return ($entries);
+        $entries = EntryUser::where('user_id',Auth::user()->id)->with('category','entryRows.dataInput')->get();
+        return ($entries);
     }
 
     public function create($category_id = null){
@@ -35,9 +38,9 @@ class EntryController extends Controller
         return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
 
-    public function edit($entry_id){
-        $entry = Entry::where('id',$entry_id)->firstOrFail();
-        $category = Category::where('id',$entry->category_id)->firstOrFail();
+    public function edit($entry_id, Request $request){
+        $entry = Entry::findOrFail($entry_id);
+        $category = Category::findOrFail($request[0]["category_id"]);
 
         $inputs = $category->dataInputs()->with(['entryRows' => function ($query) use ($entry_id) {
             $query->where('entry_id', $entry_id);
@@ -49,91 +52,161 @@ class EntryController extends Controller
     public function store(Request $request){
 
         $category_id = $request->has('category_id') ? $request['category_id'] : -1;
-        $inputs = Category::findOrFail($category_id)->dataInputs()->get();
+        $category = Category::findOrFail($category_id);
+        $inputs = $category->dataInputs()->get();
         //Create validation rules
         $validation_rules = [];
         foreach ($inputs as $key => $input) {
             $details = json_decode($input->details);
-            if(isset($details->validation->rule))
-                $validation_rules[$input->slug] = $details->validation->rule;
+            if($input->required){
+                $validation_rules[$input->slug] = "required";
+            }
+            if(isset($details->validation->rule)){
+                if(isset($validation_rules[$input->slug])){
+                    $validation_rules[$input->slug] = $validation_rules[$input->slug] . "|" . $details->validation->rule;
+                }else{
+                    $validation_rules[$input->slug] = $details->validation->rule;
+                }
+            }
         }
         //Validate
         request()->validate($validation_rules);
         //Save entry and entry rows
         $entry = new Entry();
-        $entry->category_id = $category_id;
         $entry->save();
+        $entry_user_saved = false;
         foreach ($inputs as $key => $input) {
-           if(!$request[$input->slug])continue;
-           if(is_array($request[$input->slug])){
-                // Handle arrays
-               foreach($request[$input->slug] as $_input){
-                    $entryRow = new EntryRow();
-                    $entryRow->value = $_input;
-                    $entryRow->data_input_id = $input->id;
-                    $entryRow->entry()->associate($entry);
-                    $entryRow->save();
-               }
-               continue;
-           }
-           $entryRow = new EntryRow();
-           $entryRow->value = $request[$input->slug];
-           $entryRow->data_input_id = $input->id;
-           $entryRow->entry()->associate($entry);
-           $entryRow->save();
+            $details = json_decode($input->details,true);
+            if(!$request[$input->slug])continue;
+            $array_input = is_array($request[$input->slug])?$request[$input->slug]:[$request[$input->slug]];
+            foreach($array_input as $_input){
+                
+                $entryRow = new EntryRow();
+                $entryRow->value = $_input;
+                $entryRow->data_input_id = $input->id;
+                $entry_row_user = null;
+                $entry_row_details = (object)[];
+
+                if(isset($details["type"])){
+                    $entry_row_details->type = $details["type"];
+                }
+
+                if(isset($details["type"]) && $details["type"] == "user"){
+                    $entry_row_user = User::where("name",$entryRow->value)->first();
+                    $category_identifier = array_key_exists($category->identifier,$details["save_as_category"])?$details["save_as_category"][$category->identifier]:"";
+                    $save_as_category = Category::where("identifier",$category_identifier)->first();
+                    
+                    if(!$save_as_category){
+                        $save_as_category = $category;
+                    }
+                    
+                    $entry_row_details->user_id = isset($entry_row_user->id)?$entry_row_user->id:null;
+                    $entry_row_details->category_id = $save_as_category->id;                    
+                }
+
+                $entryRow->details = json_encode($entry_row_details);
+                $entryRow->entry()->associate($entry);
+
+                if(isset($details["private"]) && $details["private"] == true){
+                    $entryRow->private = true;
+                }
+
+                $entryRow->save();
+
+                if($entry_row_user){
+                    $entry->users()->save($entry_row_user,['category_id'=>$save_as_category->id,'entry_row_id'=>$entryRow->id]);
+                    $entry_user_saved = true;
+                }
+            }
         }
-        //Associate entry to users
-        $entry->users()->saveMany([Auth::user()]);
-        //Redirect to same page
+        if(!$entry_user_saved){
+            $entry->users()->save(Auth::user(),['category_id'=>$category_id]);
+        }
         return redirect()->back();
     }
 
     public function update(Request $request,$entry_id){
         $category_id = $request->has('category_id') ? $request['category_id'] : -1;
-        $inputs = Category::findOrFail($category_id)->dataInputs()->get();
+        $category = Category::findOrFail($category_id);
+        $inputs = $category->dataInputs()->get();
         //Create validation rules
         $validation_rules = [];
         foreach ($inputs as $key => $input) {
             $details = json_decode($input->details);
-            if(isset($details->validation->rule))
-                $validation_rules[$input->slug] = $details->validation->rule;
+            if($input->required){
+                $validation_rules[$input->slug] = "required"; 
+            }
+            if(isset($details->validation->rule)){
+                if(isset($validation_rules[$input->slug])){
+                    $validation_rules[$input->slug] = $validation_rules[$input->slug] . "|" . $details->validation->rule;
+                }else{
+                    $validation_rules[$input->slug] = $details->validation->rule;
+                }
+            }
         }
         //Validate
         request()->validate($validation_rules);
         //Update entry rows
         $entry = Entry::where('id',$entry_id)->first();
+        $entry_user_saved = false;
         foreach ($inputs as $key => $input) {
            $entry->entryRows()->where('data_input_id',$input->id)->delete();
+           $details = json_decode($input->details,true);
            if(!$request[$input->slug])continue;
-           if(is_array($request[$input->slug])){
-                // Handle arrays
-                foreach($request[$input->slug] as $_input){
-                    if(gettype($_input) == 'object'){
-                        $filename = time() . $_input->getClientOriginalName();
+           $array_input = is_array($request[$input->slug])?$request[$input->slug]:[$request[$input->slug]];
+           
+            foreach($array_input as $_input){
+                /*
+                if(gettype($_input) == 'object'){
+                    $filename = time() . $_input->getClientOriginalName();
 
-                        $_input->storeAs('public/documents', $filename);
-
-                        $entryRow = new EntryRow();
-                        $entryRow->value = $filename;
-                        $entryRow->data_input_id = $input->id;
-                        $entryRow->entry()->associate($entry);
-                        $entryRow->save();
-                        continue;
-                    }
+                    $_input->storeAs('public/documents', $filename);
 
                     $entryRow = new EntryRow();
-                    $entryRow->value = $_input;
+                    $entryRow->value = $filename;
                     $entryRow->data_input_id = $input->id;
                     $entryRow->entry()->associate($entry);
                     $entryRow->save();
+                    continue;
                 }
-                continue;
+                */
+                $entryRow = new EntryRow();
+                $entryRow->value = $_input;
+                $entryRow->data_input_id = $input->id;
+                $entry_row_user = null;
+                $entry_row_details = (object)[];
+
+                if(isset($details["type"])){
+                    $entry_row_details->type = $details["type"];
+                }
+
+                if(isset($details["type"]) && $details["type"] == "user"){
+                    $entry_row_user = User::where("name",$entryRow->value)->first();
+                    $category_identifier = array_key_exists($category->identifier,$details["save_as_category"])?$details["save_as_category"][$category->identifier]:"";
+                    $save_as_category = Category::where("identifier",$category_identifier)->first();
+                    
+                    if(!$save_as_category){
+                        $save_as_category = $category;
+                    }
+                    
+                    $entry_row_details->user_id = isset($entry_row_user->id)?$entry_row_user->id:null;
+                    $entry_row_details->category_id = $save_as_category->id;                    
+                }
+
+                $entryRow->details = json_encode($entry_row_details);
+                $entryRow->entry()->associate($entry);
+
+                if(isset($details["private"]) && $details["private"] == true){
+                    $entryRow->private = true;
+                }
+
+                $entryRow->save();
+
+                if($entry_row_user){
+                    $entry->users()->save($entry_row_user,['category_id'=>$save_as_category->id,'entry_row_id'=>$entryRow->id]);
+                    $entry_user_saved = true;
+                }
             }
-           $entryRow = new EntryRow();
-           $entryRow->value = $request[$input->slug];
-           $entryRow->data_input_id = $input->id;
-           $entryRow->entry()->associate($entry);
-           $entryRow->save();
         }
         //Update updated_at timestamps in entry
         $entry->touch();
@@ -142,10 +215,18 @@ class EntryController extends Controller
     }
 
     public function delete($entry_id){
-        $entry = Entry::where('id',$entry_id)->firstOrFail();
-        $entry->entryRows()->delete();
-        $entry->users()->detach();
-        $entry->delete();
+        $entry_user = DB::table('entry_user')
+        ->where('user_id',Auth::user()->id)
+        ->where('entry_id', $entry_id)
+        ->delete();
+        $count = DB::table('entry_user')
+        ->where('entry_id', $entry_id)
+        ->count();
+        if(!$count){
+            $entry = Entry::where('id',$entry_id)->firstOrFail();
+            $entry->entryRows()->withoutGlobalScope('owns')->delete();
+            $entry->delete();
+        }
         return redirect()->back();
     }
 
@@ -165,6 +246,6 @@ class EntryController extends Controller
             $items = $this->categories($child);
             $children_data[] = $items;
         }
-        return ['id' => $category->id, 'name'=>$category->title, 'children' => $children_data];
+        return ['id' => $category->id, 'name'=> $category->title, 'children' => $children_data];
     }
 }

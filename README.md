@@ -31,6 +31,11 @@ php artisan voyager:admin your@email.com --create (para crear un nuevo admin)
     "options": ["Option1","Option2"],//In case of static options manually
     "options-api": "/api/users",//In case of static options fetched from api
     "search-api": "/api/users/search",//In case of dynamic options fetched from api, api has to receive a parameter `query`
+    "type": "user",//Type of data input [user,tag] etc
+    "save_as_category": {
+        "tutorias": "titulacion-academica"
+    },//An user in this data input with category `tutorias` will be saved as `titulacion-academica`, this is for multiuser categories
+    "private": true //If is only visible for auth user
 }
 ```
 ## License

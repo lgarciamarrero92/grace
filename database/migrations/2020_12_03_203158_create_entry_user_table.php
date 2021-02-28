@@ -15,9 +15,15 @@ class CreateEntryUserTable extends Migration
     {
         Schema::create('entry_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('entry_id');
+            $table->foreignId('entry_id')
+            ->constrained()
+            ->onDelete('cascade');
             $table->integer('user_id');
             $table->integer('category_id');
+            $table->foreignId('entry_row_id')
+            ->nullable()
+            ->constrained()
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }
