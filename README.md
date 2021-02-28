@@ -29,7 +29,7 @@ php artisan voyager:admin your@email.com --create (para crear un nuevo admin)
         "rule": "required|array|min:1|max:10" //Validation rules
     },
     "options": ["Option1","Option2"],//In case of static options manually
-    "options-api": "/api/users",//In case of static options fetched from api
+    "options-api": "/api/tags",//In case of static options fetched from api
     "search-api": "/api/users/search",//In case of dynamic options fetched from api, api has to receive a parameter `query`
     "type": "user",//Type of data input [user,tag] etc
     "show_auth_user_as_default_with_category": "titulacion-academica",//This data input in category `titulacion-academica` will show auth user as default value

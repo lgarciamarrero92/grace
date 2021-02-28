@@ -248,4 +248,7 @@ class EntryController extends Controller
         }
         return ['id' => $category->id, 'name'=> $category->title, 'children' => $children_data];
     }
+    public function tags(Request $request){
+        return EntryRow::where('details->type','tag')->select('value as name')->groupBy('name')->get();       
+    }
 }

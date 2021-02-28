@@ -56,21 +56,6 @@
 
                                     <div class="border-t border-gray-100"></div>
 
-                                    <!-- Achievemetns Management -->
-                                    <template>
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Achievements
-                                        </div>
-
-                                        <!-- List Achievements -->
-                                        <jet-dropdown-link :href="route('achievements.show', $page.user.id)">
-                                            List Achievements
-                                        </jet-dropdown-link>
-                                        <jet-dropdown-link :href="route('achievements.create')">
-                                            Insert achievement
-                                        </jet-dropdown-link>
-                                    </template>
-
                                     <!-- Team Management -->
                                     <template v-if="$page.jetstream.hasTeamFeatures">
                                         <div class="block px-4 py-2 text-xs text-gray-400">

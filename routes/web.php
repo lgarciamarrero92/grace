@@ -29,6 +29,10 @@ Route::get('/entry/{entry_id}/edit', 'App\Http\Controllers\EntryController@edit'
 Route::post('/entry/{entry_id}/edit', 'App\Http\Controllers\EntryController@update')->name('entries.update');
 Route::delete('/entry/{entry_id}', 'App\Http\Controllers\EntryController@delete');
 
+Route::group(['prefix' => 'api'], function(){
+    Route::get('/tags', 'App\Http\Controllers\EntryController@tags');
+    Route::get('users/search', 'App\Http\Controllers\UserController@search');
+});
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
