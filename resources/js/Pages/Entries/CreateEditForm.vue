@@ -7,7 +7,7 @@
                     :is="getComponentName(input.type)" 
                     :label="input.display_name" 
                     :required="input.required" 
-                    :multiple="input.multiple" 
+                    :multiple="input.multiple"
                     :details="input.details"
                     v-model="form[input.slug]"
                 ></component>
@@ -92,7 +92,7 @@ export default {
                     ln = element.entry_rows.length;
 
                 if(ln === 0)
-                    form[element.slug] = null;
+                    form[element.slug] = element.default;//If not exists a default value then it will be null
                 else if(ln === 1 && !element.multiple)
                     form[element.slug] = element.entry_rows[0].value;
                 else

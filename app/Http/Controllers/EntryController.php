@@ -32,9 +32,9 @@ class EntryController extends Controller
         if(!$category_id){
             return Inertia::render('Entries/Create',['categories' => $categories]);
         }
-        $category = Category::where('id',$category_id)->first();
-        $inputs = Category::findOrFail($category_id)->dataInputs()->get();
-
+        $category = Category::findOrFail($category_id);
+        $inputs = $category->dataInputs()->get();
+        
         return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
 
