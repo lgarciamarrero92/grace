@@ -2,11 +2,11 @@
     <v-form @submit.prevent="entry?form.post(route('entries.update',entry.id)):form.post(route('entries.store'))" ref="form">
         <v-row>
             <v-col cols="12" v-for="(input, index) in orderedInputs" :key="index">
-                <component 
-                    v-if="$options.components[getComponentName(input.type)]" 
-                    :is="getComponentName(input.type)" 
-                    :label="input.display_name" 
-                    :required="input.required" 
+                <component
+                    v-if="$options.components[getComponentName(input.type)]"
+                    :is="getComponentName(input.type)"
+                    :label="input.display_name"
+                    :required="input.required"
                     :multiple="input.multiple"
                     :details="input.details"
                     v-model="form[input.slug]"
@@ -68,7 +68,7 @@ export default {
         orderedInputs(){
             return this.inputs.sort((a,b)=>{
                 return a.order-b.order
-            })
+            });
         }
     },
     watch: {
@@ -93,18 +93,21 @@ export default {
 
                 if(ln === 0)
                     form[element.slug] = element.default;//If not exists a default value then it will be null
-                else if(ln === 1 && !element.multiple)
+                else if(ln === 1 && !element.multiple && element.type!=='fileinput')
                     form[element.slug] = element.entry_rows[0].value;
                 else
                     form[element.slug] = element.entry_rows.map(itm => {
                         return itm.value;
                     })
+
                 //form[element.slug] = (element.entry_rows && element.entry_rows.length) ?element.entry_rows[0].value:null
 
             });
+
             form = this.$inertia.form(form,{
                 resetOnSuccess: this.entry?false:true //is in editing false else true
             })
+            console.log(form);
             return form;
         }
     },

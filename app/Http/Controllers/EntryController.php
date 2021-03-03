@@ -34,7 +34,7 @@ class EntryController extends Controller
         }
         $category = Category::findOrFail($category_id);
         $inputs = $category->dataInputs()->get();
-        
+
         return Inertia::render('Entries/Create',['categories' => $categories,'category' => $category,'inputs' => $inputs]);
     }
 
@@ -76,14 +76,24 @@ class EntryController extends Controller
         $entry->save();
         $entry_user_saved = false;
         foreach ($inputs as $key => $input) {
+
+
             $details = json_decode($input->details,true);
             if(!$request[$input->slug])continue;
             $array_input = is_array($request[$input->slug])?$request[$input->slug]:[$request[$input->slug]];
             foreach($array_input as $_input){
-                
+
                 $entryRow = new EntryRow();
-                $entryRow->value = $_input;
+                if($input['type'] == 'fileinput'){
+                    // handle uploaded files
+                    $filename = time() . $_input->getClientOriginalName();
+                    $_input->storeAs('public/documents', $filename);
+                    $entryRow->value = $filename;
+                }
+                else
+                    $entryRow->value = $_input;
                 $entryRow->data_input_id = $input->id;
+
                 $entry_row_user = null;
                 $entry_row_details = (object)[];
 
@@ -95,13 +105,13 @@ class EntryController extends Controller
                     $entry_row_user = User::where("name",$entryRow->value)->first();
                     $category_identifier = array_key_exists($category->identifier,$details["save_as_category"])?$details["save_as_category"][$category->identifier]:"";
                     $save_as_category = Category::where("identifier",$category_identifier)->first();
-                    
+
                     if(!$save_as_category){
                         $save_as_category = $category;
                     }
-                    
+
                     $entry_row_details->user_id = isset($entry_row_user->id)?$entry_row_user->id:null;
-                    $entry_row_details->category_id = $save_as_category->id;                    
+                    $entry_row_details->category_id = $save_as_category->id;
                 }
 
                 $entryRow->details = json_encode($entry_row_details);
@@ -134,7 +144,7 @@ class EntryController extends Controller
         foreach ($inputs as $key => $input) {
             $details = json_decode($input->details);
             if($input->required){
-                $validation_rules[$input->slug] = "required"; 
+                $validation_rules[$input->slug] = "required";
             }
             if(isset($details->validation->rule)){
                 if(isset($validation_rules[$input->slug])){
@@ -154,24 +164,25 @@ class EntryController extends Controller
            $details = json_decode($input->details,true);
            if(!$request[$input->slug])continue;
            $array_input = is_array($request[$input->slug])?$request[$input->slug]:[$request[$input->slug]];
-           
+
             foreach($array_input as $_input){
-                /*
-                if(gettype($_input) == 'object'){
-                    $filename = time() . $_input->getClientOriginalName();
 
-                    $_input->storeAs('public/documents', $filename);
-
-                    $entryRow = new EntryRow();
-                    $entryRow->value = $filename;
-                    $entryRow->data_input_id = $input->id;
-                    $entryRow->entry()->associate($entry);
-                    $entryRow->save();
-                    continue;
-                }
-                */
                 $entryRow = new EntryRow();
-                $entryRow->value = $_input;
+
+                if($input['type'] == 'fileinput'){
+                    // handle uploaded files
+
+                    $filename = $_input;
+                    if(getType($_input) != 'string'){
+                        $filename = time() . $_input->getClientOriginalName();
+                        $_input->storeAs('public/documents', $filename);
+                    }
+
+
+                    $entryRow->value = $filename;
+                }
+                else
+                    $entryRow->value = $_input;
                 $entryRow->data_input_id = $input->id;
                 $entry_row_user = null;
                 $entry_row_details = (object)[];
@@ -184,13 +195,13 @@ class EntryController extends Controller
                     $entry_row_user = User::where("name",$entryRow->value)->first();
                     $category_identifier = array_key_exists($category->identifier,$details["save_as_category"])?$details["save_as_category"][$category->identifier]:"";
                     $save_as_category = Category::where("identifier",$category_identifier)->first();
-                    
+
                     if(!$save_as_category){
                         $save_as_category = $category;
                     }
-                    
+
                     $entry_row_details->user_id = isset($entry_row_user->id)?$entry_row_user->id:null;
-                    $entry_row_details->category_id = $save_as_category->id;                    
+                    $entry_row_details->category_id = $save_as_category->id;
                 }
 
                 $entryRow->details = json_encode($entry_row_details);
@@ -249,6 +260,6 @@ class EntryController extends Controller
         return ['id' => $category->id, 'name'=> $category->title, 'children' => $children_data];
     }
     public function tags(Request $request){
-        return EntryRow::where('details->type','tag')->select('value as name')->groupBy('name')->get();       
+        return EntryRow::where('details->type','tag')->select('value as name')->groupBy('name')->get();
     }
 }
