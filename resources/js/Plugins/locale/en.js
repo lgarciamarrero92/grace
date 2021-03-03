@@ -7,5 +7,8 @@ export default{
     create_entry: "Create Entry",
     new_entry: "Nueva Entrada",
     delete: "Delete",
-    edit: "Edit"
+    edit: "Edit",
+    search: "Search",
+    combobox_not_found_1: "No results found. Press ",
+    combobox_not_found_2: " to create a new one"
 };

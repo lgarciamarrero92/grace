@@ -21,7 +21,7 @@
                         solo-inverted
                         hide-details
                         prepend-inner-icon="mdi-magnify"
-                        label="Search"
+                        :label="$vuetify.lang.t('$vuetify.search')"
                     ></v-text-field>
 
                     <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -171,7 +171,7 @@
                                                 <v-list-item>
                                                 <v-list-item-content>
                                                     <v-list-item-title>
-                                                    No results found. Press <kbd>enter</kbd> to create a new one
+                                                   {{$vuetify.lang.t('$vuetify.combobox_not_found_1')}} <kbd>enter</kbd> {{$vuetify.lang.t('$vuetify.combobox_not_found_2')}}
                                                     </v-list-item-title>
                                                 </v-list-item-content>
                                                 </v-list-item>
