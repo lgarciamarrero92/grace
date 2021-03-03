@@ -34,7 +34,7 @@
             <v-icon>
                 mdi-check
             </v-icon>
-            All saved successfully
+            {{$vuetify.lang.t('$vuetify.all_saved_successfully')}}
         </v-snackbar>
     </v-form>
 </template>

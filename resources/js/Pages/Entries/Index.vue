@@ -127,7 +127,7 @@
                                             text
                                             color="deep-purple accent-4"
                                         >
-                                            Edit
+                                            {{$vuetify.lang.t('$vuetify.edit')}}
                                         </v-btn>
                                     </inertia-link>
 
@@ -137,7 +137,7 @@
                                         color="error"
                                         @click="handleDelete(item.entry_id)"
                                     >
-                                        Delete
+                                        {{$vuetify.lang.t('$vuetify.delete')}}
                                     </v-btn>
                                 </span>
 

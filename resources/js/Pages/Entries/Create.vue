@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Create Entry
+                {{$vuetify.lang.t('$vuetify.create_entry')}}
             </h2>
         </template>
         <div class="py-12">
@@ -33,7 +33,7 @@
                                     class="title grey--text text--lighten-1 font-weight-light"
                                     style="align-self: center;"
                                 >
-                                    Seleccione una categoría
+                                    {{$vuetify.lang.t('$vuetify.select_category')}}
                                 </div>
                                 <v-card
                                     v-else
@@ -80,7 +80,7 @@ export default {
         }
     },
     mounted(){
-        
+
     },
     computed: {
         items(){

@@ -15,7 +15,7 @@
                             depressed
                             color="primary"
                         >
-                            New Entry
+                            {{$vuetify.lang.t('$vuetify.new_entry')}}
                         </v-btn>
                     </inertia-link>
                 </v-col>
