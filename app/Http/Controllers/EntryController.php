@@ -80,11 +80,13 @@ class EntryController extends Controller
 
             $details = json_decode($input->details,true);
             if(!$request[$input->slug])continue;
+
             $array_input = is_array($request[$input->slug])?$request[$input->slug]:[$request[$input->slug]];
             foreach($array_input as $_input){
 
                 $entryRow = new EntryRow();
                 if($input['type'] == 'fileinput'){
+
                     // handle uploaded files
                     $filename = time() . $_input->getClientOriginalName();
                     $_input->storeAs('public/documents', $filename);
@@ -171,13 +173,12 @@ class EntryController extends Controller
 
                 if($input['type'] == 'fileinput'){
                     // handle uploaded files
-
-                    $filename = $_input;
-                    if(getType($_input) != 'string'){
+                    if(method_exists ($_input, 'getClientOriginalName')){
                         $filename = time() . $_input->getClientOriginalName();
                         $_input->storeAs('public/documents', $filename);
                     }
-
+                    else
+                    $filename = $_input['name'];
 
                     $entryRow->value = $filename;
                 }

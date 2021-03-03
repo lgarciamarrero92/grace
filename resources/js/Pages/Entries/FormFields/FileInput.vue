@@ -4,8 +4,17 @@
         :label="label"
         :multiple="isTrue(multiple)"
         accept="image/png, image/jpeg, image/bmp"
-        @change="handleInput"
-    ></v-file-input>
+        @change="handleInput">
+        <template v-slot:selection="{ text }">
+            <v-chip
+            small
+            label
+            color="primary"
+            >
+            {{ text }}
+            </v-chip>
+        </template>
+    </v-file-input>
 </template>
 
 <script>
@@ -25,6 +34,7 @@
         },
         methods: {
             handleInput(value){
+                console.log(this.$data.selected);
                 this.$emit('input', this.$data.selected);
             },
             stringToArray(itm){

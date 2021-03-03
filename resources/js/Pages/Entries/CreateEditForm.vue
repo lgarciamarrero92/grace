@@ -97,7 +97,7 @@ export default {
                     form[element.slug] = element.entry_rows[0].value;
                 else
                     form[element.slug] = element.entry_rows.map(itm => {
-                        return itm.value;
+                        return element.type!=='fileinput'?itm.value:{name:itm.value};
                     })
 
                 //form[element.slug] = (element.entry_rows && element.entry_rows.length) ?element.entry_rows[0].value:null
