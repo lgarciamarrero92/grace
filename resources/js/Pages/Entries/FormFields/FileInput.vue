@@ -4,15 +4,32 @@
         :label="label"
         :multiple="isTrue(multiple)"
         accept="image/png, image/jpeg, image/bmp"
-        @change="handleInput">
-        <template v-slot:selection="{ text }">
-            <v-chip
-            small
-            label
-            color="primary"
-            >
-            {{ text }}
-            </v-chip>
+        @change="handleInput"
+        truncate-length="15"
+        >
+        <template v-slot:selection="{ index, text }">
+            <v-tooltip slot="append" left>
+                <template v-slot:activator="{ on }">
+                    <v-chip
+                    v-on="on"
+                    small
+                    label
+                    color="primary"
+                    :close="isTrue(multiple)"
+                    @click:close="deleteChip(index)"
+                    draggable
+
+                    >
+                        {{ text }}
+                    </v-chip>
+                </template>
+                <span>
+                    <v-img
+                    :src="createBlob(index)"
+                    max-width="200"
+                    ></v-img>
+                </span>
+            </v-tooltip>
         </template>
     </v-file-input>
 </template>
@@ -34,16 +51,23 @@
         },
         methods: {
             handleInput(value){
-                console.log(this.$data.selected);
+                //console.log(this.$data.selected);
                 this.$emit('input', this.$data.selected);
-            },
-            stringToArray(itm){
-                if(typeof itm === 'string')
-                    return [itm];
-                return itm;
             },
             isTrue(elm){
                 return elm !== 0;
+            },
+            showPreview(index){
+                console.log(index);
+            },
+            deleteChip(index){
+                this.$data.selected.splice(index, 1);
+            },
+            createBlob(index){
+                if(this.$data.selected[index].onDB)
+                    return '/storage/documents/' + this.$data.selected[index].name;
+
+                return URL.createObjectURL(this.$data.selected[index]);
             }
         },
     }
